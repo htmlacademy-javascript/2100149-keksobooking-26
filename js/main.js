@@ -49,31 +49,31 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
   return +result.toFixed(digits);
 };
 
-const getRandomAvatar = (avatarNumber) => {
+const getAvatar = (avatarNumber) => {
   if (avatarNumber !== 10) {
-    avatarNumber = '0' + avatarNumber;
-  };
-  return 'img/avatars/user' + avatarNumber + '.png';
+    avatarNumber = `0${  avatarNumber}`;
+  }
+  return `img/avatars/user${  avatarNumber  }.png`;
 };
 
-const getRandomArrayElement = (elements) => {
-  return elements[getRandomPositiveInteger(0, elements.length-1)];
-};
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length-1)];
 
 const getRandomArray = (array) => {
-  let newArray = [];
+  const newArray = [];
   array.forEach((value) => {
-    (getRandomPositiveInteger(0,1)) ? newArray.push(value) : 0 ;
+    if (getRandomPositiveInteger(0,1)) {
+      newArray.push(value);
+    }
   });
   return newArray;
 };
 
 const createOffer = (avatarNumber) => {
-  let newOffer =  {
-    author: {avatar: getRandomAvatar(avatarNumber)},
+  const newOffer =  {
+    author: {avatar: getAvatar(avatarNumber)},
     offer: {
       title: 'Какой-то заголовок',
-      adress: ', ' + this.location.lng,
+      adress: '',
       price: getRandomPositiveInteger(1000, 5000),
       type: getRandomArrayElement(offerTypes),
       rooms: getRandomPositiveInteger(1, 5),
@@ -89,17 +89,12 @@ const createOffer = (avatarNumber) => {
       lng: getRandomPositiveFloat(139.7, 139.8, 5),
     },
   };
-  newOffer.offer.adress = offer.location.lat + ', ' + offer.location.lng;
+  newOffer.offer.adress = `${newOffer.location.lat  }, ${  newOffer.location.lng}`;
   return newOffer;
 };
 
-let similarOffers = [];
+const similarOffers = [];
 
 for (let i = 1; i <= SIMILAR_OFFERS_COUNT; i++) {
   similarOffers.push(createOffer(i));
-};
-
-
-console.log(similarOffers);
-
-
+}
