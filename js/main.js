@@ -73,7 +73,7 @@ const createOffer = (avatarNumber) => {
     author: {avatar: getAvatar(avatarNumber)},
     offer: {
       title: 'Какой-то заголовок',
-      adress: '',
+      address: '',
       price: getRandomPositiveInteger(1000, 5000),
       type: getRandomArrayElement(offerTypes),
       rooms: getRandomPositiveInteger(1, 5),
@@ -89,7 +89,7 @@ const createOffer = (avatarNumber) => {
       lng: getRandomPositiveFloat(139.7, 139.8, 5),
     },
   };
-  newOffer.offer.adress = `${newOffer.location.lat  }, ${  newOffer.location.lng}`;
+  newOffer.offer.address = `${newOffer.location.lat  }, ${  newOffer.location.lng}`;
   return newOffer;
 };
 
