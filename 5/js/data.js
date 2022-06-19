@@ -37,31 +37,6 @@ const photos = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-const createOffer = (avatarNumber) => {
-  const newOffer =  {
-    author: {avatar: getAvatar(avatarNumber)},
-    offer: {
-      title: 'Какой-то заголовок',
-      address: '',
-      price: getRandomPositiveInteger(1000, 5000),
-      type: getRandomArrayElement(offerTypes),
-      rooms: getRandomPositiveInteger(1, 5),
-      guests: getRandomPositiveInteger(1, 20),
-      checkin: getRandomArrayElement(checkinTimes),
-      checkout: getRandomArrayElement(checkoutTimes),
-      features: getRandomArray(features),
-      description: 'Какое-то описание',
-      photos: getRandomArrayElement(photos),
-    },
-    location: {
-      lat: getRandomPositiveFloat(35.65, 35.70, 5),
-      lng: getRandomPositiveFloat(139.7, 139.8, 5),
-    },
-  };
-  newOffer.offer.address = `${newOffer.location.lat  }, ${  newOffer.location.lng}`;
-  return newOffer;
-};
-
 const createOffers = (count = SIMILAR_OFFERS_COUNT) => {
   const similarOffers = [];
   for (let i = 1; i <= count; i++) {
@@ -91,4 +66,4 @@ const createOffers = (count = SIMILAR_OFFERS_COUNT) => {
   return similarOffers;
 };
 
-export {createOffers, createOffer};
+export {createOffers};
