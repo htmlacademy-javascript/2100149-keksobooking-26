@@ -31,4 +31,10 @@ const getRandomArray = (array) => {
   return newArray;
 };
 
+const isUndefinedRemove = (value, element) => {
+  if (!value) {
+    element.textContent = element;
+  }
+};
+
 export {getRandomPositiveInteger, getRandomPositiveFloat, getAvatar, getRandomArrayElement, getRandomArray};
