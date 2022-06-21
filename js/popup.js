@@ -27,6 +27,14 @@ const insertOffer = (item) => {
   currentOffer.querySelector('.popup__text--time').textContent = `Заезд после ${item.offer.checkin}, выезд до ${item.offer.checkout}`;
   currentOffer.querySelector('.popup__description').textContent = item.offer.description;
 
+const removeUnnecessaryBlocks = (items) => {
+  for (let i = 0; i < items.length; i++) {
+    if (!items[i].textContent) {
+      items[i].remove();
+    }
+  }
+};
+
   //заполняем блок с удобствами
   featuresList.forEach((featureListElement) => {
     const isNecessary = item.offer.features.some(
@@ -40,9 +48,9 @@ const insertOffer = (item) => {
   //заполняем блок с фотографиями
   photosList.innerHTML = '';
   item.offer.photos.forEach ((photo) => {
-    const photosElementClone = photosElement.cloneNode(true);
-    photosElementClone.src = photo;
-    photosList.appendChild(photosElementClone);
+    const currentPhotosElement = photosElement.cloneNode(true);
+    currentPhotosElement.src = photo;
+    photosList.appendChild(currentPhotosElement);
   });
 
   //блок с аватаром
@@ -51,9 +59,7 @@ const insertOffer = (item) => {
     currentOffer.querySelector('.popup__avatar').remove();
   }
 
-  for (let i = 0; i < currentOffer.length; i++) {
-    console.log(currentOffer[i]);
-  }
+  removeUnnecessaryBlocks(currentOffer);
 
   blockForInsert.appendChild(currentOffer); //вставляем готовое объявление
 };
