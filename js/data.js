@@ -53,7 +53,7 @@ const createOffers = (count = SIMILAR_OFFERS_COUNT) => {
         checkout: getRandomArrayElement(checkoutTimes),
         features: getRandomArray(features),
         description: 'Какое-то описание',
-        photos: getRandomArrayElement(photos),
+        photos: getRandomArray(photos),
       },
       location: {
         lat: getRandomPositiveFloat(35.65, 35.70, 5),
