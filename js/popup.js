@@ -1,5 +1,3 @@
-import {createOffers} from './data.js';
-
 const offerTypes = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -9,55 +7,55 @@ const offerTypes = {
 };
 
 
-const insertBlock = document.querySelector('#map-canvas'); //сюда вставляем
+const blockForInsert = document.querySelector('#map-canvas'); //сюда вставляем
 
-const offerTemplate = document.querySelector('#card')
+const offerTemplate = document.querySelector('#card') //фрагмент с содержимым темплейта
   .content
-  .querySelector('.popup'); //фрагмент с содержимым темплейта
+  .querySelector('.popup');
 
-const similarOffers = createOffers();
+const insertOffer = (item) => {
+  const currentOffer = offerTemplate.cloneNode(true);
+  const featuresList = currentOffer.querySelectorAll('.popup__feature');
+  const photosList = currentOffer.querySelector('.popup__photos');
+  const photosElement = currentOffer.querySelector('.popup__photo');
 
-const offerElement = offerTemplate.cloneNode(true);
-if (!isUndefinedRemove(similarOffers[0].offer.title, element)) {
-  offerElement.querySelector('.popup__title').textContent = similarOffers[0].offer.title;
-} else {
+  currentOffer.querySelector('.popup__title').textContent = item.offer.title;
+  currentOffer.querySelector('.popup__text--address').textContent = item.offer.address;
+  currentOffer.querySelector('.popup__text--price').textContent = `${item.offer.price  } ₽/ночь`;
+  currentOffer.querySelector('.popup__type').textContent = offerTypes[item.offer.type];
+  currentOffer.querySelector('.popup__text--capacity').textContent = `${item.offer.rooms} комнаты для ${item.offer.guests} гостей`;
+  currentOffer.querySelector('.popup__text--time').textContent = `Заезд после ${item.offer.checkin}, выезд до ${item.offer.checkout}`;
+  currentOffer.querySelector('.popup__description').textContent = item.offer.description;
 
-};
-offerElement.querySelector('.popup__text--address').textContent = similarOffers[0].offer.address;
-offerElement.querySelector('.popup__text--price').textContent = `${similarOffers[0].offer.price  } ₽/ночь`;
-offerElement.querySelector('.popup__type').textContent = offerTypes[similarOffers[0].offer.type];
-offerElement.querySelector('.popup__text--capacity').textContent = `${similarOffers[0].offer.rooms} комнаты для ${similarOffers[0].offer.guests} гостей`;
-offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${similarOffers[0].offer.checkin}, выезд до ${similarOffers[0].offer.checkout}`;
+  //заполняем блок с удобствами
+  featuresList.forEach((featureListElement) => {
+    const isNecessary = item.offer.features.some(
+      (feature) => featureListElement.classList.contains(`popup__feature--${feature}`)
+    );
+    if (!isNecessary) {
+      featureListElement.remove();
+    }
+  });
 
-const featuresList = document.querySelectorAll('.popup__feature');
-featuresList.forEach((featureListElement) => {
-  const isNecessary = similarOffers[0].offer.features.some(
-    (feature) => featureListElement.classList.contains('popup__feature--' + feature),
-  );
-  if (!isNecessary) {
-    featureListElement.remove();
+  //заполняем блок с фотографиями
+  photosList.innerHTML = '';
+  item.offer.photos.forEach ((photo) => {
+    const photosElementClone = photosElement.cloneNode(true);
+    photosElementClone.src = photo;
+    photosList.appendChild(photosElementClone);
+  });
+
+  //блок с аватаром
+  currentOffer.querySelector('.popup__avatar').src = item.author.avatar;
+  if (!item.author.avatar) {
+    currentOffer.querySelector('.popup__avatar').remove();
   }
-});
 
-offerElement.querySelector('.popup__description').textContent = similarOffers[0].offer.description;
+  for (let i = 0; i < currentOffer.length; i++) {
+    console.log(currentOffer[i]);
+  }
 
-const photosList = document.querySelector('.popup__photos');
-const photosElement = document.querySelector('.popup__photo').cloneNode(true);
-photosList.innerHTML = '';
-similarOffers[0].offer.photos.forEach ((photo) => {
-  photosElement.src = photo;
-  photosList.appendChild(photosElement);
-});
+  blockForInsert.appendChild(currentOffer); //вставляем готовое объявление
+};
 
-offerElement.querySelector('.popup__avatar').src = similarOffers[0].author.avatar;
-
-//предусмотреть, что данных не хватает (блок скрывается)
-
-
-
-
-
-
-insertBlock.appendChild(offerElement);
-
-
+export {insertOffer};
