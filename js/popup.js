@@ -1,19 +1,13 @@
-const offerTypes = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalow: 'Бунгало',
-  hotel: 'Отель'
-};
+import {offerTypes} from './data.js';
 
-const blockForInsert = document.querySelector('#map-canvas'); //сюда вставляем
+const offersContainer = document.querySelector('#map-canvas'); //сюда вставляем
 
 const offerTemplate = document.querySelector('#card') //фрагмент с содержимым темплейта
   .content
   .querySelector('.popup');
 
-const insertBlock = (node, method, text, ...values) => {
-  node[method] = text;
+const insertBlock = (node, destination, text, ...values) => {
+  node[destination] = text;
   if (!values.every((value) => value)) {
     node.remove();
   }
@@ -52,7 +46,7 @@ const insertOffer = (item) => {
     photosList.appendChild(currentPhotosElement);
   });
 
-  blockForInsert.appendChild(currentOffer); //вставляем готовое объявление
+  offersContainer.appendChild(currentOffer); //вставляем готовое объявление
 };
 
 export {insertOffer};

@@ -2,13 +2,13 @@ import {getRandomPositiveInteger, getRandomPositiveFloat, getAvatar, getRandomAr
 
 const SIMILAR_OFFERS_COUNT = 10;
 
-const offerTypes = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-  'hotel'
-];
+const offerTypes = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель'
+};
 
 const checkinTimes = [
   '12:00',
@@ -46,7 +46,7 @@ const createOffers = (count = SIMILAR_OFFERS_COUNT) => {
         title: 'Какой-то заголовок',
         address: '',
         price: getRandomPositiveInteger(1000, 5000),
-        type: getRandomArrayElement(offerTypes),
+        type: getRandomArrayElement(Object.keys(offerTypes)),
         rooms: getRandomPositiveInteger(1, 5),
         guests: getRandomPositiveInteger(1, 20),
         checkin: getRandomArrayElement(checkinTimes),
@@ -66,4 +66,4 @@ const createOffers = (count = SIMILAR_OFFERS_COUNT) => {
   return similarOffers;
 };
 
-export {createOffers};
+export {createOffers, offerTypes};
