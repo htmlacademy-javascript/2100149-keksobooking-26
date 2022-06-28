@@ -13,24 +13,24 @@ const insertBlock = (node, destination, text, ...values) => {
   }
 };
 
-const insertOffer = (item) => {
+const insertOffer = (element) => {
   const currentOffer = offerTemplate.cloneNode(true);
   const featuresList = currentOffer.querySelectorAll('.popup__feature');
   const photosList = currentOffer.querySelector('.popup__photos');
   const photosElement = currentOffer.querySelector('.popup__photo');
 
-  insertBlock(currentOffer.querySelector('.popup__avatar'), 'src', item.author.avatar, item.author.avatar );
-  insertBlock(currentOffer.querySelector('.popup__title'), 'textContent', item.offer.title, item.offer.title );
-  insertBlock(currentOffer.querySelector('.popup__text--address'), 'textContent', item.offer.address, item.offer.address);
-  insertBlock(currentOffer.querySelector('.popup__text--price').firstChild, 'textContent', `${item.offer.price  } `, item.offer.price);
-  insertBlock(currentOffer.querySelector('.popup__type'), 'textContent', offerTypes[item.offer.type], item.offer.type );
-  insertBlock(currentOffer.querySelector('.popup__text--capacity'), 'textContent', `${item.offer.rooms} комнаты для ${item.offer.guests} гостей`, item.offer.rooms, item.offer.guests );
-  insertBlock(currentOffer.querySelector('.popup__text--time'), 'textContent', `Заезд после ${item.offer.checkin}, выезд до ${item.offer.checkout}`, item.offer.checkin, item.offer.checkout );
-  insertBlock(currentOffer.querySelector('.popup__description'), 'textContent', item.offer.description, item.offer.description );
+  insertBlock(currentOffer.querySelector('.popup__avatar'), 'src', element.author.avatar, element.author.avatar );
+  insertBlock(currentOffer.querySelector('.popup__title'), 'textContent', element.offer.title, element.offer.title );
+  insertBlock(currentOffer.querySelector('.popup__text--address'), 'textContent', element.offer.address, element.offer.address);
+  insertBlock(currentOffer.querySelector('.popup__text--price').firstChild, 'textContent', `${element.offer.price  } `, element.offer.price);
+  insertBlock(currentOffer.querySelector('.popup__type'), 'textContent', offerTypes[element.offer.type], element.offer.type );
+  insertBlock(currentOffer.querySelector('.popup__text--capacity'), 'textContent', `${element.offer.rooms} комнаты для ${element.offer.guests} гостей`, element.offer.rooms, element.offer.guests );
+  insertBlock(currentOffer.querySelector('.popup__text--time'), 'textContent', `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`, element.offer.checkin, element.offer.checkout );
+  insertBlock(currentOffer.querySelector('.popup__description'), 'textContent', element.offer.description, element.offer.description );
 
   //заполняем блок с удобствами
   featuresList.forEach((featureListElement) => {
-    const isNecessary = item.offer.features.some(
+    const isNecessary = element.offer.features.some(
       (feature) => featureListElement.classList.contains(`popup__feature--${feature}`)
     );
     if (!isNecessary) {
@@ -40,7 +40,7 @@ const insertOffer = (item) => {
 
   //заполняем блок с фотографиями
   photosList.innerHTML = '';
-  item.offer.photos.forEach ((photo) => {
+  element.offer.photos.forEach ((photo) => {
     const currentPhotosElement = photosElement.cloneNode(true);
     currentPhotosElement.src = photo;
     photosList.appendChild(currentPhotosElement);
