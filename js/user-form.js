@@ -21,8 +21,6 @@ const guestsField = form.querySelector('#capacity');
 
 const validateCapacity = () => maxCapacity[roomsField.value].includes(guestsField.value);
 
-const getDeliveryError = () => console.log('abchihba');
-
 pristine.addValidator (
   roomsField,
   validateCapacity,
