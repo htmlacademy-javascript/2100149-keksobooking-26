@@ -1,35 +1,39 @@
 const form = document.querySelector('.ad-form');
-const pristine = new Pristine(form);
+
+const pristine = new Pristine(form, {
+  classTo: 'ad-form__element',
+  errorClass: 'ad-form__element--invalid',
+  successClass: 'ad-form__element--valid',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'span',
+  errorTextClass: 'form__error'
+});
 
 const maxCapacity = {
-  '1 комната': 'для 1 гостя',
-  '2 комнаты': ['для 2 гостей', 'для 1 гостя'],
-  '3 комнаты': ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
-  '100 комнат': 'не для гостей'
+  1: [1],
+  2: [2, 1],
+  3: [3, 2, 1],
+  100: [0]
 };
 
 const roomsField = form.querySelector('#room_number');
 const guestsField = form.querySelector('#capacity');
 
-const validateCapacity = () => {
-  return maxCapacity[roomsField.value].includes(guestsField.value)
-};
+const validateCapacity = () => maxCapacity[roomsField.value].includes(guestsField.value);
 
-const getDeliveryError = () => {
-
-};
+const getDeliveryError = () => console.log('abchihba');
 
 pristine.addValidator (
   roomsField,
   validateCapacity,
-  getDeliveryError
-)
+  'не соответствует кол-ву гостей'
+);
 
 pristine.addValidator (
   guestsField,
   validateCapacity,
-  getDeliveryError
-)
+  'не соответствует кол-ву комнат'
+);
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
