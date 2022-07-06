@@ -35,4 +35,5 @@ pristine.addValidator (
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  pristine.validate();
 });
