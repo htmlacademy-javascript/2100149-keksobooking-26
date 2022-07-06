@@ -10,10 +10,10 @@ const pristine = new Pristine(form, {
 });
 
 const maxCapacity = {
-  1: [1],
-  2: [2, 1],
-  3: [3, 2, 1],
-  100: [0]
+  '1': ['1'],
+  '2': ['2', '1'],
+  '3': ['3', '2', '1'],
+  '100': ['0']
 };
 
 const roomsField = form.querySelector('#room_number');
@@ -35,11 +35,4 @@ pristine.addValidator (
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-
-  const isValid = pristine.validate();
-  if (isValid) {
-    console.log('Можно отправлять');
-  } else {
-    console.log('Форма невалидна');
-  }
 });
