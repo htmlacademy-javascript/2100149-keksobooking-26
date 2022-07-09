@@ -3,9 +3,7 @@ const form = document.querySelector('.ad-form');
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
-  successClass: 'ad-form__element--valid',
   errorTextParent: 'ad-form__element',
-  errorTextTag: 'span',
   errorTextClass: 'form__error'
 });
 
@@ -24,13 +22,13 @@ const validateCapacity = () => maxCapacity[roomsField.value].includes(guestsFiel
 pristine.addValidator (
   roomsField,
   validateCapacity,
-  'не соответствует кол-ву гостей'
+  'Не соответствует кол-ву гостей'
 );
 
 pristine.addValidator (
   guestsField,
   validateCapacity,
-  'не соответствует кол-ву комнат'
+  'Не соответствует кол-ву комнат'
 );
 
 form.addEventListener('submit', (evt) => {
