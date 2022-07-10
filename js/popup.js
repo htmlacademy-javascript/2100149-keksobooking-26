@@ -46,7 +46,8 @@ const insertOffer = (element) => {
     photosList.appendChild(currentPhotosElement);
   });
 
-  offersContainer.appendChild(currentOffer); //вставляем готовое объявление
+  //offersContainer.appendChild(currentOffer); //вставляем готовое объявление
+  return currentOffer;
 };
 
 export {insertOffer};

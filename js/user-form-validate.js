@@ -1,3 +1,5 @@
+import { map, userMarker } from './map.js';
+
 const form = document.querySelector('.ad-form');
 
 const pristine = new Pristine(form, {
@@ -33,5 +35,16 @@ pristine.addValidator (
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  if (isValid) {
+    userMarker.setLatLng({
+      lat: 35.69365,
+      lng: 139.71054,
+    });
+    map.setView({
+      lat: 35.69365,
+      lng: 139.71054,
+    }, 12);
+    document.querySelector('#address').value = '35.69365, 139.71054';
+  }
 });
