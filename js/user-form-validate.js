@@ -14,10 +14,35 @@ const maxCapacity = {
   '100': ['0']
 };
 
+const typeMinimalCost = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
+};
+
+const typeField = form.querySelector('#type');
+const priceField = form.querySelector('#price');
 const roomsField = form.querySelector('#room_number');
 const guestsField = form.querySelector('#capacity');
 
 const validateCapacity = () => maxCapacity[roomsField.value].includes(guestsField.value);
+const validatePrice = () => {
+  const selectedType = typeField.querySelector('option:checked').value;
+  return priceField.value >= typeMinimalCost[selectedType];
+};
+
+typeField.addEventListener('change',() => {
+  const selectedType = typeField.querySelector('option:checked').value;
+  priceField.placeholder = typeMinimalCost[selectedType];
+});
+
+pristine.addValidator (
+  priceField,
+  validatePrice,
+  'Цена не соответствует выбранному типу жилья'
+);
 
 pristine.addValidator (
   roomsField,
