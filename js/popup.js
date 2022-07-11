@@ -1,7 +1,5 @@
 import {offerTypes} from './data.js';
 
-const offersContainer = document.querySelector('#map-canvas'); //сюда вставляем
-
 const offerTemplate = document.querySelector('#card') //фрагмент с содержимым темплейта
   .content
   .querySelector('.popup');
@@ -46,7 +44,6 @@ const insertOffer = (element) => {
     photosList.appendChild(currentPhotosElement);
   });
 
-  //offersContainer.appendChild(currentOffer); //вставляем готовое объявление
   return currentOffer;
 };
 
