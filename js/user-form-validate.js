@@ -14,7 +14,7 @@ const maxCapacity = {
   '100': ['0']
 };
 
-const typeMinimalCost = {
+const minCost = {
   bungalow: 0,
   flat: 1000,
   hotel: 3000,
@@ -29,13 +29,13 @@ const guestsField = form.querySelector('#capacity');
 
 const validateCapacity = () => maxCapacity[roomsField.value].includes(guestsField.value);
 const validatePrice = () => {
-  const selectedType = typeField.querySelector('option:checked').value;
-  return priceField.value >= typeMinimalCost[selectedType];
+  const selectedType = typeField.value;
+  return priceField.value >= minCost[selectedType];
 };
 
 typeField.addEventListener('change',() => {
-  const selectedType = typeField.querySelector('option:checked').value;
-  priceField.placeholder = typeMinimalCost[selectedType];
+  const selectedType = typeField.value;
+  priceField.placeholder = minCost[selectedType];
 });
 
 pristine.addValidator (
