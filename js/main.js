@@ -1,6 +1,7 @@
 import {createOffers} from './data.js';
 import {insertOffer} from './popup.js';
 import {getRandomPositiveInteger} from './util.js';
+import './user-form-validate.js';
 import { activateForm, deactivateForm } from './user-form.js';
 
 deactivateForm();

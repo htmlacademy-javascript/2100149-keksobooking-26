@@ -380,6 +380,12 @@ fieldset {
   border-radius: 4px;
 }
 
+.ad-form__element--invalid input,
+.ad-form__element--invalid select,
+.ad-form__element--invalid textarea {
+  border-color: red;
+}
+
 .ad-form__element input:hover,
 .ad-form__element select:hover,
 .ad-form__element textarea:hover {
@@ -666,6 +672,9 @@ fieldset {
           box-shadow: 0 0 2px 2px #ff6547;
 }
 
+.form__error {
+  color:red;
+}
 
 /* Футер
    ========================================================================== */
