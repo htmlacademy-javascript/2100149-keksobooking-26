@@ -26,6 +26,16 @@ const typeField = form.querySelector('#type');
 const priceField = form.querySelector('#price');
 const roomsField = form.querySelector('#room_number');
 const guestsField = form.querySelector('#capacity');
+const timeinField = form.querySelector('#timein');
+const timeoutField = form.querySelector('#timeout');
+
+timeinField.addEventListener ('change', () => {
+  timeoutField.value = timeinField.value;
+});
+
+timeoutField.addEventListener ('change', () => {
+  timeinField.value = timeoutField.value;
+});
 
 const validateCapacity = () => maxCapacity[roomsField.value].includes(guestsField.value);
 const validatePrice = () => {
