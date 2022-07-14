@@ -16,10 +16,45 @@ const maxCapacity = {
   '100': ['0']
 };
 
+const minCost = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
+};
+
+const typeField = form.querySelector('#type');
+const priceField = form.querySelector('#price');
 const roomsField = form.querySelector('#room_number');
 const guestsField = form.querySelector('#capacity');
+const timeinField = form.querySelector('#timein');
+const timeoutField = form.querySelector('#timeout');
+
+timeinField.addEventListener ('change', () => {
+  timeoutField.value = timeinField.value;
+});
+
+timeoutField.addEventListener ('change', () => {
+  timeinField.value = timeoutField.value;
+});
 
 const validateCapacity = () => maxCapacity[roomsField.value].includes(guestsField.value);
+const validatePrice = () => {
+  const selectedType = typeField.value;
+  return priceField.value >= minCost[selectedType];
+};
+
+typeField.addEventListener('change',() => {
+  const selectedType = typeField.value;
+  priceField.placeholder = minCost[selectedType];
+});
+
+pristine.addValidator (
+  priceField,
+  validatePrice,
+  'Цена не соответствует выбранному типу жилья'
+);
 
 pristine.addValidator (
   roomsField,
