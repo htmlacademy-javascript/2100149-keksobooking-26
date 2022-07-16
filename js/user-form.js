@@ -21,9 +21,13 @@ timeoutField.addEventListener ('change', () => {
   timeinField.value = timeoutField.value;
 });
 
-typeField.addEventListener('change',() => {
+typeField.addEventListener('change', () => {
   const selectedType = typeField.value;
   priceField.placeholder = minCost[selectedType];
+});
+
+priceField.addEventListener('input', () => {
+  sliderElement.noUiSlider.set(priceField.value);
 });
 
 noUiSlider.create(sliderElement, {
@@ -32,7 +36,7 @@ noUiSlider.create(sliderElement, {
     max: 100000,
   },
   start: 1000,
-  step: 100,
+  step: 1,
   connect: 'lower',
   format: {
     to: function (value) {
