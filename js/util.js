@@ -1,5 +1,9 @@
+import {form, mapFiltersForm} from './user-form.js';
+import {map, userMarker} from './map.js';
+
 const ALERT_SHOW_TIME = 5000;
 
+/* мэйби и не пригодится боле
 const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
@@ -14,13 +18,6 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
   return +result.toFixed(digits);
 };
 
-const getAvatar = (avatarNumber) => {
-  if (avatarNumber !== 10) {
-    avatarNumber = `0${  avatarNumber}`;
-  }
-  return `img/avatars/user${  avatarNumber  }.png`;
-};
-
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length-1)];
 
 const getRandomArray = (array) => {
@@ -31,6 +28,26 @@ const getRandomArray = (array) => {
     }
   });
   return newArray;
+};
+ */
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const setDefault = () => {
+  userMarker.setLatLng({
+    lat: 35.69365,
+    lng: 139.71054,
+  });
+  map.setView({
+    lat: 35.69365,
+    lng: 139.71054,
+  }, 12);
+  //document.querySelector('#address').value = '35.69365, 139.71054';
+  //const userInputs = document.querySelectorAll('input');
+  form.reset();
+  mapFiltersForm.reset();
+  //скрыть балун если показан
+  map.closePopup();
 };
 
 const showAlert = (message) => {
@@ -52,4 +69,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {getRandomPositiveInteger, getRandomPositiveFloat, getAvatar, getRandomArrayElement, getRandomArray, showAlert};
+export {isEscapeKey, setDefault, showAlert};

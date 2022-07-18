@@ -1,6 +1,6 @@
-//import { map, userMarker } from './map.js';
 import { maxCapacity, minCost } from './data.js';
 import { sendOffer } from './api.js';
+import { isEscapeKey, setDefault } from './util.js';
 
 const form = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
@@ -84,24 +84,12 @@ pristine.addValidator (
   'Не соответствует кол-ву комнат'
 );
 
-const setDefault = () => {
-  userMarker.setLatLng({
-    lat: 35.69365,
-    lng: 139.71054,
-  });
-  map.setView({
-    lat: 35.69365,
-    lng: 139.71054,
-  }, 12);
-  document.querySelector('#address').value = '35.69365, 139.71054';
-};
-
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
     //sendOffer(evt.target);
-    //setDefault();
+    setDefault();
     const formData = new FormData(evt.target);
     fetch('https://26.javascript.pages.academy/keksobooking/',
       {
@@ -111,13 +99,20 @@ form.addEventListener('submit', (evt) => {
     )
       .then ((response) => {
         if (response.ok) {
-          const succesMessage = document.querySelector('#succes')
+          setDefault();
+          const successMessage = document.querySelector('#success')
             .content
             .querySelector('.success')
             .cloneNode(true);
-          document.body.append(succesMessage);
+          body.append(successMessage);
           document.addEventListener ('click', () => {
-            succesMessage.remove();
+            successMessage.remove();
+          });
+          document.addEventListener ('keydown', (evt) => {
+            if (isEscapeKey(evt)) {
+              evt.preventDefault();
+              successMessage.remove();
+            }
           });
         } else {
           throw new Error;
@@ -128,11 +123,23 @@ form.addEventListener('submit', (evt) => {
           .content
           .querySelector('.error')
           .cloneNode(true);
-        document.body.append(errorMessage);
+        body.append(errorMessage);
         document.addEventListener ('click', () => {
           errorMessage.remove();
         });
+        document.addEventListener ('keydown', (evt) => {
+          if (isEscapeKey(evt)) {
+            evt.preventDefault();
+            errorMessage.remove();
+          }
+        });
+        //проверить enter по кнопке
+        const errorButton = errorMessage.querySelector('button');
+        errorButton.addEventListener ('click', () => {
+          errorMessage.remove();
+        });
       });
+      //проверить не висят ли обработчики
   }
 });
 
@@ -161,4 +168,4 @@ const activateFiltersForm = () => {
   }
 };
 
-export {deactivateForms, activateUserForm, activateFiltersForm};
+export {form, mapFiltersForm, deactivateForms, activateUserForm, activateFiltersForm};

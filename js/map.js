@@ -67,4 +67,4 @@ const createOfferMarkers = (offers) => {
   });
 };
 
-export {createMap, userMarker, createOfferMarkers};
+export {map, userMarker, createMap, createOfferMarkers};
