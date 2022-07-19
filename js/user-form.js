@@ -1,5 +1,6 @@
-import { map, userMarker } from './map.js';
+//import { map, userMarker } from './map.js';
 import { maxCapacity, minCost } from './data.js';
+import { sendOffer } from './api.js';
 
 const form = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
@@ -83,23 +84,59 @@ pristine.addValidator (
   'Не соответствует кол-ву комнат'
 );
 
+const setDefault = () => {
+  userMarker.setLatLng({
+    lat: 35.69365,
+    lng: 139.71054,
+  });
+  map.setView({
+    lat: 35.69365,
+    lng: 139.71054,
+  }, 12);
+  document.querySelector('#address').value = '35.69365, 139.71054';
+};
+
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    userMarker.setLatLng({
-      lat: 35.69365,
-      lng: 139.71054,
-    });
-    map.setView({
-      lat: 35.69365,
-      lng: 139.71054,
-    }, 12);
-    document.querySelector('#address').value = '35.69365, 139.71054';
+    //sendOffer(evt.target);
+    //setDefault();
+    const formData = new FormData(evt.target);
+    fetch('https://26.javascript.pages.academy/keksobooking/',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then ((response) => {
+        if (response.ok) {
+          const succesMessage = document.querySelector('#succes')
+            .content
+            .querySelector('.success')
+            .cloneNode(true);
+          document.body.append(succesMessage);
+          document.addEventListener ('click', () => {
+            succesMessage.remove();
+          });
+        } else {
+          throw new Error;
+        }
+      })
+      .catch (() => {
+        const errorMessage = document.querySelector('#error')
+          .content
+          .querySelector('.error')
+          .cloneNode(true);
+        document.body.append(errorMessage);
+        document.addEventListener ('click', () => {
+          errorMessage.remove();
+        });
+      });
   }
 });
 
-const deactivateForm = () => {
+const deactivateForms = () => {
   form.classList.add('ad-form--disabled');
   for (let i = 0; i < formElements.length; i++) {
     formElements[i].setAttribute('disabled', 'disabled');
@@ -110,15 +147,18 @@ const deactivateForm = () => {
   }
 };
 
-const activateForm = () => {
+const activateUserForm = () => {
   form.classList.remove('ad-form--disabled');
   for (let i = 0; i < formElements.length; i++) {
     formElements[i].removeAttribute('disabled');
   }
+};
+
+const activateFiltersForm = () => {
   mapFiltersForm.classList.remove('map__filters--disabled');
   for (let i = 0; i < mapFiltersFormElements.length; i++) {
     mapFiltersFormElements[i].removeAttribute('disabled');
   }
 };
 
-export {deactivateForm, activateForm};
+export {deactivateForms, activateUserForm, activateFiltersForm};

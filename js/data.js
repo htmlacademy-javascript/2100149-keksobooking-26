@@ -25,7 +25,7 @@ const offerTypes = {
   hotel: 'Отель'
 };
 
-const checkinTimes = [
+/* const checkinTimes = [
   '12:00',
   '13:00',
   '14:00'
@@ -79,6 +79,6 @@ const createOffers = (count = SIMILAR_OFFERS_COUNT) => {
     similarOffers.push(newOffer);
   }
   return similarOffers;
-};
+}; */
 
-export {maxCapacity, minCost, createOffers, offerTypes};
+export {maxCapacity, minCost, offerTypes};

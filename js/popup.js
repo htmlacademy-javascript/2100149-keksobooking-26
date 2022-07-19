@@ -1,6 +1,6 @@
 import {offerTypes} from './data.js';
 
-const offerTemplate = document.querySelector('#card') //фрагмент с содержимым темплейта
+const offerTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
@@ -13,6 +13,7 @@ const insertBlock = (node, destination, text, ...values) => {
 
 const insertOffer = (element) => {
   const currentOffer = offerTemplate.cloneNode(true);
+  const featureList = currentOffer.querySelectorAll('.popup__features');
   const featuresList = currentOffer.querySelectorAll('.popup__feature');
   const photosList = currentOffer.querySelector('.popup__photos');
   const photosElement = currentOffer.querySelector('.popup__photo');
@@ -25,25 +26,30 @@ const insertOffer = (element) => {
   insertBlock(currentOffer.querySelector('.popup__text--capacity'), 'textContent', `${element.offer.rooms} комнаты для ${element.offer.guests} гостей`, element.offer.rooms, element.offer.guests );
   insertBlock(currentOffer.querySelector('.popup__text--time'), 'textContent', `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`, element.offer.checkin, element.offer.checkout );
   insertBlock(currentOffer.querySelector('.popup__description'), 'textContent', element.offer.description, element.offer.description );
-
-  //заполняем блок с удобствами
-  featuresList.forEach((featureListElement) => {
-    const isNecessary = element.offer.features.some(
-      (feature) => featureListElement.classList.contains(`popup__feature--${feature}`)
-    );
-    if (!isNecessary) {
+  if (element.offer.features) {
+    featuresList.forEach((featureListElement) => {
+      const isNecessary = element.offer.features.some(
+        (feature) => featureListElement.classList.contains(`popup__feature--${feature}`)
+      );
+      if (!isNecessary) {
+        featureListElement.remove();
+      }
+    });
+  } else {
+    featureList.forEach((featureListElement) => {
       featureListElement.remove();
-    }
-  });
-
-  //заполняем блок с фотографиями
-  photosList.innerHTML = '';
-  element.offer.photos.forEach ((photo) => {
-    const currentPhotosElement = photosElement.cloneNode(true);
-    currentPhotosElement.src = photo;
-    photosList.appendChild(currentPhotosElement);
-  });
-
+    });
+  }
+  if (element.offer.photos) {
+    photosList.innerHTML = '';
+    element.offer.photos.forEach ((photo) => {
+      const currentPhotoElement = photosElement.cloneNode(true);
+      currentPhotoElement.src = photo;
+      photosList.appendChild(currentPhotoElement);
+    });
+  } else {
+    photosList.remove();
+  }
   return currentOffer;
 };
 
