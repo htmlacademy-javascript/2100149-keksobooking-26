@@ -24,7 +24,7 @@ const getOffers = () => {
 
 
 const sendOffer = (formData) => {
-  fetch('https://26.javascript.pages.academy/keksobookin/',
+  fetch('https://26.javascript.pages.academy/keksobooking/',
     {
       method: 'POST',
       body: formData,
