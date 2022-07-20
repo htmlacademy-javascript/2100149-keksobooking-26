@@ -3,7 +3,8 @@ import {map, userMarker} from './map.js';
 
 const ALERT_SHOW_TIME = 5000;
 
-/* мэйби и не пригодится боле
+//мэйби и не пригодится боле
+/*
 const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
@@ -42,11 +43,8 @@ const setDefault = () => {
     lat: 35.69365,
     lng: 139.71054,
   }, 12);
-  //document.querySelector('#address').value = '35.69365, 139.71054';
-  //const userInputs = document.querySelectorAll('input');
   form.reset();
   mapFiltersForm.reset();
-  //скрыть балун если показан
   map.closePopup();
 };
 

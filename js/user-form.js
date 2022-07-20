@@ -1,6 +1,6 @@
 import { maxCapacity, minCost } from './data.js';
 import { sendOffer } from './api.js';
-import { isEscapeKey, setDefault } from './util.js';
+import { setDefault } from './util.js';
 
 const form = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
@@ -13,6 +13,7 @@ const guestsField = form.querySelector('#capacity');
 const timeinField = form.querySelector('#timein');
 const timeoutField = form.querySelector('#timeout');
 const sliderElement = form.querySelector('.ad-form__slider');
+const resetButton = form.querySelector('.ad-form__reset');
 
 timeinField.addEventListener ('change', () => {
   timeoutField.value = timeinField.value;
@@ -88,59 +89,13 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    //sendOffer(evt.target);
-    setDefault();
     const formData = new FormData(evt.target);
-    fetch('https://26.javascript.pages.academy/keksobooking/',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then ((response) => {
-        if (response.ok) {
-          setDefault();
-          const successMessage = document.querySelector('#success')
-            .content
-            .querySelector('.success')
-            .cloneNode(true);
-          body.append(successMessage);
-          document.addEventListener ('click', () => {
-            successMessage.remove();
-          });
-          document.addEventListener ('keydown', (evt) => {
-            if (isEscapeKey(evt)) {
-              evt.preventDefault();
-              successMessage.remove();
-            }
-          });
-        } else {
-          throw new Error;
-        }
-      })
-      .catch (() => {
-        const errorMessage = document.querySelector('#error')
-          .content
-          .querySelector('.error')
-          .cloneNode(true);
-        body.append(errorMessage);
-        document.addEventListener ('click', () => {
-          errorMessage.remove();
-        });
-        document.addEventListener ('keydown', (evt) => {
-          if (isEscapeKey(evt)) {
-            evt.preventDefault();
-            errorMessage.remove();
-          }
-        });
-        //проверить enter по кнопке
-        const errorButton = errorMessage.querySelector('button');
-        errorButton.addEventListener ('click', () => {
-          errorMessage.remove();
-        });
-      });
-      //проверить не висят ли обработчики
+    sendOffer(formData);
   }
+});
+
+resetButton.addEventListener('click', () => {
+  setDefault();
 });
 
 const deactivateForms = () => {
