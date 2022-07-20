@@ -1,4 +1,4 @@
-const SIMILAR_OFFERS_COUNT = 10;
+//const SIMILAR_OFFERS_COUNT = 10;
 
 const maxCapacity = {
   '1': ['1'],
