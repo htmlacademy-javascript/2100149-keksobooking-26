@@ -1,7 +1,9 @@
+import { getData } from './api.js';
 import {activateUserForm } from './user-form.js';
 import {insertOffer} from  './popup.js';
 
 const map = L.map('map-canvas');
+const offerMarkersGroup = L.layerGroup().addTo(map);
 
 const userMarkerIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -29,6 +31,7 @@ const userMarker = L.marker(
 const createMap = () => {
   map.on('load', () => {
     activateUserForm();
+    getData();
   })
     .setView({
       lat: 35.69365,
@@ -49,13 +52,12 @@ userMarker.on('moveend', (evt) => {
   addressField.value = `${selectedAddress.lat.toFixed(5)}, ${selectedAddress.lng.toFixed(5)}`;
 });
 
-const createOfferMarkers = (offers) => {
-  const offerMarkersGroup = L.layerGroup().addTo(map);
-  offers.forEach ((offer) => {
+const createOfferMarkers = (elements) => {
+  elements.forEach ((element) => {
     const offerMarker = L.marker(
       {
-        lat: offer.location.lat,
-        lng: offer.location.lng,
+        lat: element.location.lat,
+        lng: element.location.lng,
       },
       {
         icon: offerMarkerIcon,
@@ -63,8 +65,12 @@ const createOfferMarkers = (offers) => {
     );
     offerMarker
       .addTo(offerMarkersGroup)
-      .bindPopup(insertOffer(offer));
+      .bindPopup(insertOffer(element));
   });
 };
 
-export {map, userMarker, createMap, createOfferMarkers};
+const clearMarkers = () => {
+  offerMarkersGroup.clearLayers();
+};
+
+export {map, userMarker, createMap, createOfferMarkers, clearMarkers};

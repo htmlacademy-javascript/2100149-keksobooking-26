@@ -1,37 +1,43 @@
-import { createOfferMarkers } from './map.js';
-import { activateFiltersForm } from './user-form.js';
 import { showAlert } from './util.js';
+import { activateFiltersForm } from './user-form.js';
+import { createOfferMarkers } from './map.js';
+import {setFilterListeners} from './filtration.js';
 
-const getOffers = async () => {
-  let responce;
-  try {
-    responce = await fetch('https://26.javascript.pages.academy/keksobooking/data');
-    if (!responce.ok) {
+const getData = () => {
+  fetch('https://26.javascript.pages.academy/keksobooking/data')
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
       throw new Error ('Не удалось загрузить данные с сервера');
-    }
-  } catch (err) {
-    showAlert(err.message);
-  }
-  const offers = await responce.json();
-  createOfferMarkers(offers);
-  activateFiltersForm();
+    })
+    .then ((data) => {
+      createOfferMarkers(data);
+      activateFiltersForm();
+      setFilterListeners();
+    })
+    .catch((err) => {
+      showAlert(err.message);
+    });
 };
 
-const sendOffer = async (onSucces, onFail, body) => {
-  let responce;
-  try {
-    responce = await fetch('https://26.javascript.pages.academy/keksobookin/',
-      {
-        method: 'POST',
-        body,
-      },);
-    if (!responce.ok) {
-      throw new Error;
-    }
-    onSucces();
-  } catch(err) {
-    onFail();
-  }
+const sendOffer = (onSuccess, onFail, formData) => {
+  fetch('https://26.javascript.pages.academy/keksobooking/',
+    {
+      method: 'POST',
+      body: formData,
+    },
+  )
+    .then ((response) => {
+      if (response.ok) {
+        onSuccess();
+      } else {
+        throw new Error;
+      }
+    })
+    .catch (() => {
+      onFail();
+    });
 };
 
-export {getOffers, sendOffer};
+export {getData, sendOffer};

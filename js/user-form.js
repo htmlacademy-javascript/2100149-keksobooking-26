@@ -25,7 +25,6 @@ const errorMessage = document.querySelector('#error')
   .cloneNode(true);
 const errorButton = errorMessage.querySelector('button');
 
-
 timeinField.addEventListener ('change', () => {
   timeoutField.value = timeinField.value;
 });
@@ -96,7 +95,7 @@ pristine.addValidator (
   'Не соответствует кол-ву комнат'
 );
 
-/* const closeSuccessMessage = (evt) => {
+const closeSuccessMessage = (evt) => {
   if (evt.type === 'keydown' && isEscapeKey(evt) || evt.type === 'click')  {
     evt.preventDefault();
     successMessage.remove();
@@ -121,7 +120,7 @@ const closeErrorMessage = (evt) => {
 };
 
 const showErrorMessage = () => {
-  document.body.append(successMessage);
+  document.body.append(errorMessage);
   document.addEventListener('click', closeErrorMessage);
   document.addEventListener ('keydown', closeErrorMessage);
   errorButton.addEventListener ('click', closeErrorMessage);
@@ -135,37 +134,31 @@ const blockSubmitButton = () => {
 const unblockSubmitButton = () => {
   submitButton.disabled = false;
   submitButton.textContent = 'Опубликовать';
-}; */
-
-const succes = ()=> {
-  console.log('succes');
 };
 
-const fail = ()=> {
-  console.log('fail');
+const onSuccess = ()=> {
+  showSuccessMessage();
+  setDefault();
+  unblockSubmitButton();
+};
+
+const onFail = ()=> {
+  showErrorMessage();
+  unblockSubmitButton();
 };
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    //blockSubmitButton();
-    sendOffer(succes, fail, new FormData(evt.target));
-    /* () => {
-        //showSuccessMessage();
-        //setDefault();
-        //unblockSubmitButton();
-      } ,
-      () => {
-        //showErrorMessage();
-        //unblockSubmitButton();
-      },
-      new FormData(evt.target),
-      */
+    blockSubmitButton();
+    sendOffer(onSuccess, onFail, new FormData(evt.target));
   }
 });
 
-resetButton.addEventListener('click', setDefault());
+resetButton.addEventListener('click', () => {
+  setDefault();
+});
 
 const deactivateForms = () => {
   form.classList.add('ad-form--disabled');
