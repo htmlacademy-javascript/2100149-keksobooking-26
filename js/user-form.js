@@ -1,6 +1,6 @@
 import { maxCapacity, minCost } from './data.js';
 import { sendOffer } from './api.js';
-import { setDefault } from './util.js';
+import { isEscapeKey, setDefault } from './util.js';
 
 const form = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
@@ -14,6 +14,17 @@ const timeinField = form.querySelector('#timein');
 const timeoutField = form.querySelector('#timeout');
 const sliderElement = form.querySelector('.ad-form__slider');
 const resetButton = form.querySelector('.ad-form__reset');
+const submitButton = document.querySelector('.ad-form__submit');
+const successMessage = document.querySelector('#success')
+  .content
+  .querySelector('.success')
+  .cloneNode(true);
+const errorMessage = document.querySelector('#error')
+  .content
+  .querySelector('.error')
+  .cloneNode(true);
+const errorButton = errorMessage.querySelector('button');
+
 
 timeinField.addEventListener ('change', () => {
   timeoutField.value = timeinField.value;
@@ -85,18 +96,76 @@ pristine.addValidator (
   'Не соответствует кол-ву комнат'
 );
 
+/* const closeSuccessMessage = (evt) => {
+  if (evt.type === 'keydown' && isEscapeKey(evt) || evt.type === 'click')  {
+    evt.preventDefault();
+    successMessage.remove();
+    document.removeEventListener('click', closeSuccessMessage);
+    document.removeEventListener ('keydown', closeSuccessMessage);
+  }
+};
+
+const showSuccessMessage = () => {
+  document.body.append(successMessage);
+  document.addEventListener('click', closeSuccessMessage);
+  document.addEventListener ('keydown', closeSuccessMessage);
+};
+
+const closeErrorMessage = (evt) => {
+  if (evt.type === 'keydown' && isEscapeKey(evt) || evt.type === 'click')  {
+    evt.preventDefault();
+    errorMessage.remove();
+    document.removeEventListener('click', closeErrorMessage);
+    document.removeEventListener ('keydown', closeErrorMessage);
+  }
+};
+
+const showErrorMessage = () => {
+  document.body.append(successMessage);
+  document.addEventListener('click', closeErrorMessage);
+  document.addEventListener ('keydown', closeErrorMessage);
+  errorButton.addEventListener ('click', closeErrorMessage);
+};
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+}; */
+
+const succes = ()=> {
+  console.log('succes');
+};
+
+const fail = ()=> {
+  console.log('fail');
+};
+
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    const formData = new FormData(evt.target);
-    sendOffer(formData);
+    //blockSubmitButton();
+    sendOffer(succes, fail, new FormData(evt.target));
+    /* () => {
+        //showSuccessMessage();
+        //setDefault();
+        //unblockSubmitButton();
+      } ,
+      () => {
+        //showErrorMessage();
+        //unblockSubmitButton();
+      },
+      new FormData(evt.target),
+      */
   }
 });
 
-resetButton.addEventListener('click', () => {
-  setDefault();
-});
+resetButton.addEventListener('click', setDefault());
 
 const deactivateForms = () => {
   form.classList.add('ad-form--disabled');

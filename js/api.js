@@ -1,76 +1,37 @@
 import { createOfferMarkers } from './map.js';
 import { activateFiltersForm } from './user-form.js';
 import { showAlert } from './util.js';
-import { isEscapeKey, setDefault } from './util.js';
 
-const getOffers = () => {
-  fetch('https://26.javascript.pages.academy/keksobooking/data')
-    .then ((response) => {
-      if (response.ok) {
-        return response.json();
-      }
+const getOffers = async () => {
+  let responce;
+  try {
+    responce = await fetch('https://26.javascript.pages.academy/keksobooking/data');
+    if (!responce.ok) {
       throw new Error ('Не удалось загрузить данные с сервера');
-    })
-    .then((offers) => {
-      createOfferMarkers(offers);
-    })
-    .then(() => {
-      activateFiltersForm();
-    })
-    .catch((error) => {
-      showAlert(error);
-    });
+    }
+  } catch (err) {
+    showAlert(err.message);
+  }
+  const offers = await responce.json();
+  createOfferMarkers(offers);
+  activateFiltersForm();
 };
 
-
-const sendOffer = (formData) => {
-  fetch('https://26.javascript.pages.academy/keksobooking/',
-    {
-      method: 'POST',
-      body: formData,
-    },
-  )
-    .then ((response) => {
-      if (response.ok) {
-        setDefault();
-        const successMessage = document.querySelector('#success')
-          .content
-          .querySelector('.success')
-          .cloneNode(true);
-        document.body.append(successMessage);
-        document.addEventListener ('click', () => {
-          successMessage.remove();
-        });
-        document.addEventListener ('keydown', (evt) => {
-          if (isEscapeKey(evt)) {
-            evt.preventDefault();
-            successMessage.remove();
-          }
-        });
-      } else {
-        throw new Error;
-      }
-    })
-    .catch (() => {
-      const errorMessage = document.querySelector('#error')
-        .content
-        .querySelector('.error')
-        .cloneNode(true);
-      document.body.append(errorMessage);
-      document.addEventListener ('click', () => {
-        errorMessage.remove();
-      });
-      document.addEventListener ('keydown', (evt) => {
-        if (isEscapeKey(evt)) {
-          evt.preventDefault();
-          errorMessage.remove();
-        }
-      });
-      const errorButton = errorMessage.querySelector('button');
-      errorButton.addEventListener ('click', () => {
-        errorMessage.remove();
-      });
-    });
+const sendOffer = async (onSucces, onFail, body) => {
+  let responce;
+  try {
+    responce = await fetch('https://26.javascript.pages.academy/keksobookin/',
+      {
+        method: 'POST',
+        body,
+      },);
+    if (!responce.ok) {
+      throw new Error;
+    }
+    onSucces();
+  } catch(err) {
+    onFail();
+  }
 };
 
-export {getOffers,sendOffer};
+export {getOffers, sendOffer};

@@ -1,5 +1,3 @@
-//const SIMILAR_OFFERS_COUNT = 10;
-
 const maxCapacity = {
   '1': ['1'],
   '2': ['2', '1'],
