@@ -1,2 +1,5 @@
-import './map.js';
-import './user-form.js';
+import {deactivateForms} from './user-form.js';
+import {createMap} from './map.js';
+
+deactivateForms();
+createMap();

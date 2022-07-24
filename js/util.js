@@ -1,3 +1,10 @@
+import {form, mapFiltersForm} from './user-form.js';
+import {map, userMarker} from './map.js';
+
+const ALERT_SHOW_TIME = 5000;
+
+//мэйби и не пригодится боле
+/*
 const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
@@ -12,13 +19,6 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
   return +result.toFixed(digits);
 };
 
-const getAvatar = (avatarNumber) => {
-  if (avatarNumber !== 10) {
-    avatarNumber = `0${  avatarNumber}`;
-  }
-  return `img/avatars/user${  avatarNumber  }.png`;
-};
-
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length-1)];
 
 const getRandomArray = (array) => {
@@ -30,5 +30,41 @@ const getRandomArray = (array) => {
   });
   return newArray;
 };
+ */
 
-export {getRandomPositiveInteger, getRandomPositiveFloat, getAvatar, getRandomArrayElement, getRandomArray};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const setDefault = () => {
+  userMarker.setLatLng({
+    lat: 35.69365,
+    lng: 139.71054,
+  });
+  map.setView({
+    lat: 35.69365,
+    lng: 139.71054,
+  }, 12);
+  form.reset();
+  mapFiltersForm.reset();
+  map.closePopup();
+};
+
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '100';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '0';
+  alertContainer.style.top = '0';
+  alertContainer.style.right = '0';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = '#B22222';
+  alertContainer.style.color = 'white';
+  alertContainer.textContent = message;
+  document.body.append(alertContainer);
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+export {isEscapeKey, setDefault, showAlert};
