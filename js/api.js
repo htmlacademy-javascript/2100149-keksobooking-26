@@ -1,9 +1,7 @@
 import { showAlert } from './util.js';
 import { activateFiltersForm } from './user-form.js';
-import { createOfferMarkers } from './map.js';
-import {setFilterListeners} from './filtration.js';
 
-const getData = () => {
+const getData = (onSuccess) => {
   fetch('https://26.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {
@@ -12,9 +10,8 @@ const getData = () => {
       throw new Error ('Не удалось загрузить данные с сервера');
     })
     .then ((data) => {
-      createOfferMarkers(data);
       activateFiltersForm();
-      setFilterListeners();
+      onSuccess(data);
     })
     .catch((err) => {
       showAlert(err.message);

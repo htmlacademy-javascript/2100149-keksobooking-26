@@ -1,6 +1,11 @@
 import { getData } from './api.js';
 import {activateUserForm } from './user-form.js';
 import {insertOffer} from  './popup.js';
+import {getFilteredOffers, setFilterListeners} from './filtration.js';
+import { debounce } from './util.js';
+
+const SIMILAR_OFFERS_COUNT = 10;
+const RERENDER_DELAY = 500;
 
 const map = L.map('map-canvas');
 const offerMarkersGroup = L.layerGroup().addTo(map);
@@ -28,10 +33,39 @@ const userMarker = L.marker(
   },
 );
 
+userMarker.on('moveend', (evt) => {
+  const selectedAddress = evt.target.getLatLng();
+  const addressField = document.querySelector('#address');
+  addressField.value = `${selectedAddress.lat.toFixed(5)}, ${selectedAddress.lng.toFixed(5)}`;
+});
+
+const clearMarkers = () => {
+  offerMarkersGroup.clearLayers();
+};
+
+const createOfferMarkers = (elements) => {
+  clearMarkers();
+  getFilteredOffers(elements)
+    .slice(0, SIMILAR_OFFERS_COUNT)
+    .forEach ((element) => {
+      const offerMarker = L.marker(
+        {
+          lat: element.location.lat,
+          lng: element.location.lng,
+        },
+        {
+          icon: offerMarkerIcon,
+        },
+      );
+      offerMarker
+        .addTo(offerMarkersGroup)
+        .bindPopup(insertOffer(element));
+    });
+};
+
 const createMap = () => {
   map.on('load', () => {
     activateUserForm();
-    getData();
   })
     .setView({
       lat: 35.69365,
@@ -44,33 +78,10 @@ const createMap = () => {
     },
   ).addTo(map);
   userMarker.addTo(map);
-};
-
-userMarker.on('moveend', (evt) => {
-  const selectedAddress = evt.target.getLatLng();
-  const addressField = document.querySelector('#address');
-  addressField.value = `${selectedAddress.lat.toFixed(5)}, ${selectedAddress.lng.toFixed(5)}`;
-});
-
-const createOfferMarkers = (elements) => {
-  elements.forEach ((element) => {
-    const offerMarker = L.marker(
-      {
-        lat: element.location.lat,
-        lng: element.location.lng,
-      },
-      {
-        icon: offerMarkerIcon,
-      },
-    );
-    offerMarker
-      .addTo(offerMarkersGroup)
-      .bindPopup(insertOffer(element));
+  getData((offers) => {
+    createOfferMarkers(offers);
+    setFilterListeners(debounce(() => createOfferMarkers(offers), RERENDER_DELAY));
   });
-};
-
-const clearMarkers = () => {
-  offerMarkersGroup.clearLayers();
 };
 
 export {map, userMarker, createMap, createOfferMarkers, clearMarkers};

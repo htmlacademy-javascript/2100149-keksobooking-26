@@ -1,6 +1,20 @@
-import { maxCapacity, minCost } from './data.js';
 import { sendOffer } from './api.js';
 import { isEscapeKey, setDefault } from './util.js';
+
+const maxCapacity = {
+  '1': ['1'],
+  '2': ['2', '1'],
+  '3': ['3', '2', '1'],
+  '100': ['0']
+};
+
+const minCost = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
+};
 
 const form = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
