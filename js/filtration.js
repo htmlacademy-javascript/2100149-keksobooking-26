@@ -1,51 +1,50 @@
 import { mapFiltersForm } from './user-form.js';
-/* import { createOfferMarkers, clearMarkers } from './map.js';
 
 const DEFAULT_VALUE = 'any';
-const SIMILAR_OFFERS_COUNT = 10;
-
-const selectedType = document.querySelector('#housing-type').value;
-const selectedPrice = document.querySelector('#housing-price').value;
-const selectedRooms = document.querySelector('#housing-rooms').value;
-const selectedGuests = document.querySelector('#housing-guests').value; */
-
-const setFilterListeners = () => {
-  mapFiltersForm.addEventListener ('change', () => {
-    //console.log('da');
-  });
-  mapFiltersForm.addEventListener ('reset', () => {
-    //console.log('aga');
-  });
+const Prices = {
+  MIN_PRICE: 10000,
+  MAX_PRICE: 50000
 };
 
-export {setFilterListeners};
-
-/*
-const filterOffers = (elements) => {
-  elements.filter((element) => {
-    elements = element.offer.type === selectedType;
-  });
-  return elements;
+const filterPrice = (selectedPrice, offerPrice) => {
+  switch (selectedPrice) {
+    case 'middle':
+      return Prices.MIN_PRICE <= offerPrice && offerPrice <= Prices.MAX_PRICE;
+    case 'low':
+      return offerPrice <= Prices.MIN_PRICE;
+    case 'high':
+      return offerPrice >= Prices.MAX_PRICE;
+    default:
+      return true;
+  }
 };
 
-const getOfferRank = (element) => {
-  let rank = 0;
+const filterFeatures = (offerFeatures) => {
+  const checkedFeaturesList = document.querySelectorAll('[name=features]:checked');
+  const checkedFeatures = [];
+  checkedFeaturesList.forEach((element) => checkedFeatures.push(element.value));
+  if (checkedFeatures.length) {
+    return (offerFeatures) ? checkedFeatures.every((element) => offerFeatures.includes(element)) : 0;
+  }
+  return true;
+};
+
+const getFilteredOffers = (elements) => {
   const selectedType = document.querySelector('#housing-type').value;
   const selectedPrice = document.querySelector('#housing-price').value;
   const selectedRooms = document.querySelector('#housing-rooms').value;
   const selectedGuests = document.querySelector('#housing-guests').value;
-
-
-  rank += element.offer.type === selectedType ? 1 : 0;
-  //условие для цены
-  return rank;
+  const filteredOffers = elements
+    .filter((element) => selectedType === element.offer.type || selectedType === DEFAULT_VALUE)
+    .filter((element) => filterPrice(selectedPrice, element.offer.price))
+    .filter((element) => parseInt(selectedRooms, 10) === element.offer.rooms || selectedRooms === DEFAULT_VALUE)
+    .filter((element) => parseInt(selectedGuests, 10) === element.offer.guests || selectedGuests === DEFAULT_VALUE)
+    .filter((element) => filterFeatures(element.offer.features));
+  return filteredOffers;
 };
 
-const compareOffers = (offerA, offerB) => getOfferRank(offerA) - getOfferRank(offerB);
+const setFilterListeners = (cb) => {
+  mapFiltersForm.addEventListener ('change', cb);
+};
 
-const getFilteredOffers = (elements) => {
-  elements
-    .slice()
-    .sort(compareOffers)
-    .slice(0, SIMILAR_OFFERS_COUNT)
-}; */
+export {getFilteredOffers, setFilterListeners};

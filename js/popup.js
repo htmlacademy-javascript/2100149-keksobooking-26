@@ -1,4 +1,10 @@
-import {offerTypes} from './data.js';
+const offerTypes = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель'
+};
 
 const offerTemplate = document.querySelector('#card')
   .content

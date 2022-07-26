@@ -3,34 +3,13 @@ import {map, userMarker} from './map.js';
 
 const ALERT_SHOW_TIME = 5000;
 
-//мэйби и не пригодится боле
-/*
-const getRandomPositiveInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
 };
-
-const getRandomPositiveFloat = (a, b, digits = 1) => {
-  const lower = Math.min(Math.abs(a), Math.abs(b));
-  const upper = Math.max(Math.abs(a), Math.abs(b));
-  const result = Math.random() * (upper - lower) + lower;
-  return +result.toFixed(digits);
-};
-
-const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length-1)];
-
-const getRandomArray = (array) => {
-  const newArray = [];
-  array.forEach((value) => {
-    if (getRandomPositiveInteger(0,1)) {
-      newArray.push(value);
-    }
-  });
-  return newArray;
-};
- */
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -67,4 +46,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {isEscapeKey, setDefault, showAlert};
+export {isEscapeKey, setDefault, showAlert, debounce};
